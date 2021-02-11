@@ -29,7 +29,6 @@ public class HowdyController {
 		return "howdy";
 	}
 
-
 	// if and each tags
 	@GetMapping("/all/{willSayHi}")
 	public String allHello(@PathVariable boolean willSayHi, Model model) {
