@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DiceController {
 
-    @GetMapping("/dice-roll")
-    @ResponseBody
+    @GetMapping("/roll-dice")
     public String getRoll() {
-        return "this is your dice roll";
+            return "roll-dice";
     }
-
 }
+
