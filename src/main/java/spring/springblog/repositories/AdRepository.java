@@ -12,7 +12,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
     List<Ad> findByOrderByTitle();
 
-    @Query("from Ad a where a.id like ?")
+    @Query("from Ad a where a.id like ?1 and ?2")
     Ad getAdById(long id);
 
     //THESE TWO ARE THE SAME QUERY

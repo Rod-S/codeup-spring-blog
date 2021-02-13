@@ -14,6 +14,7 @@ public class PostController {
     public String getPosts() {
         return "This is your posts page";
     }
+
     @GetMapping("/posts/{id}")
     @ResponseBody
     public String getPostId(@PathVariable int id) {
