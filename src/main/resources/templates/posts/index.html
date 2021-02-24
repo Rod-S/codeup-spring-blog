@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="partials/head :: header-links"></head>
     <meta charset="UTF-8">
     <title>Viewing All Posts</title>
 </head>
 <body>
+<nav th:replace="partials/navbar :: navbar"></nav>
+
+<h1>Displaying all posts</h1>
 <div th:each="post : ${posts}">
     <p th:text="${post.title}" />
 </div>
