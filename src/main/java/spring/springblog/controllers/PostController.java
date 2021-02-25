@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import spring.springblog.models.Post;
 import spring.springblog.repositories.PostRepository;
+import spring.springblog.repositories.UserRepository;
 
 @Controller
 public class PostController {
 
     private final PostRepository postsDao;
+    private final UserRepository usersDao;
 
-    public PostController(PostRepository postsDao){
+    public PostController(PostRepository postsDao, UserRepository usersDao){
         this.postsDao = postsDao;
+        this.usersDao = usersDao;
     }
 
     @GetMapping("/posts")
