@@ -1,5 +1,6 @@
 package spring.springblog.controllers;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,17 +9,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import spring.springblog.models.Post;
 import spring.springblog.repositories.PostRepository;
-import spring.springblog.repositories.UserRepository;
+import spring.springblog.services.EmailService;
+import spring.springblog.services.UserService;
 
 @Controller
 public class PostController {
 
     private final PostRepository postsDao;
-    private final UserRepository usersDao;
+//    private final UserRepository usersDao;
+    private final UserService userService;
 
-    public PostController(PostRepository postsDao, UserRepository usersDao){
+    public PostController(PostRepository postsDao, UserService userService, EmailService emailService){
         this.postsDao = postsDao;
-        this.usersDao = usersDao;
+//        this.usersDao = usersDao;
+        this.userService = userService;
     }
 
     @GetMapping("/posts")
@@ -47,4 +51,8 @@ public class PostController {
     public String postForm() {
         return "results from creating a post";
     }
+
+//    public UserRepository getUsersDao() {
+//        return usersDao;
+//    }
 }
