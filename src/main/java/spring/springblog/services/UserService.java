@@ -1,7 +1,7 @@
 package spring.springblog.services;
 
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
+import spring.springblog.models.User;
 import spring.springblog.repositories.UserRepository;
 
 @Service("UserService")
