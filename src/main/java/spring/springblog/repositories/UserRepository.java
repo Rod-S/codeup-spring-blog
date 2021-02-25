@@ -1,7 +1,7 @@
 package spring.springblog.repositories;
 
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import spring.springblog.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
