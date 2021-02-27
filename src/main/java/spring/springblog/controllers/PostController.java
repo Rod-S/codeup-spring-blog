@@ -3,12 +3,11 @@ package spring.springblog.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import spring.springblog.models.Post;
+import spring.springblog.models.User;
 import spring.springblog.repositories.PostRepository;
+import spring.springblog.repositories.UserRepository;
 import spring.springblog.services.EmailService;
 import spring.springblog.services.UserService;
 
@@ -16,13 +15,15 @@ import spring.springblog.services.UserService;
 public class PostController {
 
     private final PostRepository postsDao;
-//    private final UserRepository usersDao;
+    private final UserRepository usersDao;
     private final UserService userService;
+    private final EmailService emailService;
 
-    public PostController(PostRepository postsDao, UserService userService, EmailService emailService){
+    public PostController(PostRepository postsDao, UserRepository usersDao, UserService userService, EmailService emailService){
         this.postsDao = postsDao;
-//        this.usersDao = usersDao;
+        this.usersDao = usersDao;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/posts")
@@ -40,19 +41,50 @@ public class PostController {
         return "posts/show";
     }
 
+    @GetMapping("/posts/{id}/edit")
+    public String viewEditPostForm(@PathVariable long id, Model model) {
+        model.addAttribute("post", postsDao.getOne(id));
+        return "posts/edit";
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String updatePost(@PathVariable long id, @ModelAttribute Post post) {
+        //TODO: Change user to logged in user dynamic
+        User user = userService.getLoggedInUser();
+        post.setUser(user);
+        postsDao.save(post);
+        return "redirect:/posts";
+    }
+
+    @PostMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable long id){
+        System.out.println("Deleting post...");
+        postsDao.deleteById(id);
+        return "redirect:/posts";
+    }
+
     @GetMapping("/posts/create")
-    @ResponseBody
-    public String createForm() {
-        return "here is the form for creating a posts";
+    public String postForm(Model model){
+        model.addAttribute("post", new Post());
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    @ResponseBody
-    public String postForm() {
-        return "results from creating a post";
-    }
+    public String createPost(@ModelAttribute Post post) {
+        // Will throw if no users in the db!
+        // In the future, we will get the logged in user
+        User user = userService.getLoggedInUser();
+        post.setUser(user);
 
-//    public UserRepository getUsersDao() {
-//        return usersDao;
-//    }
+        Post savedPost = postsDao.save(post);
+
+        //send an email when an ad is successfully saved
+        String subject = "New Post Created: " + savedPost.getTitle();
+        String body = "Dear " + savedPost.getUser().getUsername()
+                + ". Thank you for creating a post. Your post id is "
+                + savedPost.getId();
+
+        emailService.prepareAndSend(savedPost, subject, body);
+        return "redirect:/posts";
+    }
 }

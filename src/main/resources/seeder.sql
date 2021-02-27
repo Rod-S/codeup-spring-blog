@@ -9,4 +9,3 @@ user.setUsername("cody");
 user.setEmail("cody@codeup.com");
 user.setPassword("codeuprocks");
 userDao.save(user);
-insert into users ()
