@@ -8,18 +8,19 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import spring.springblog.models.Post;
 
-@Service("mailService")
+@Service
 public class EmailService {
 
     //dependency injection
-    public final JavaMailSender emailSender;
+    @Autowired
+    public JavaMailSender emailSender;
 
     @Value("${spring.mail.from}")
     private String from;
 
-    public EmailService(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
-    }
+//    public EmailService(JavaMailSender emailSender) {
+//        this.emailSender = emailSender;
+//    }
 
     public void prepareAndSend(Post post, String subject, String body) {
         SimpleMailMessage msg = new SimpleMailMessage();

@@ -1,10 +1,11 @@
 package spring.springblog.services;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import spring.springblog.models.User;
 import spring.springblog.repositories.UserRepository;
 
-@Service("UserService")
+@Service
 public class UserService {
     private final UserRepository usersDao;
 
@@ -13,7 +14,8 @@ public class UserService {
     }
 
     //Placeholder for "logged in user"
-    public User loggedInUser(){
-        return usersDao.findAll().get(0);
+    public User getLoggedInUser() {
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usersDao.findById(loggedInUser.getId()).get();
     }
 }
